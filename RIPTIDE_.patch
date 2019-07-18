@@ -1,0 +1,1042 @@
+--- RIPTIDE_.asm	2019-07-18 14:53:24 +0300
++++ RIPTIDE_.asm_old	2019-07-18 14:45:47 +0300
+@@ -291,7 +291,7 @@
+ 		call	near ptr _exit
+ ; ---------------------------------------------------------------------------
+ 
+-__cleanup:				; CODE XREF: sub_2D4E+26p
++__cleanup::				; CODE XREF: sub_2D4E+26p
+ 		mov	es, cs:dgroup@
+ 		assume es:nothing
+ 		push	si
+@@ -751,9 +751,9 @@
+ 		fstsw	ax
+ 		sahf
+ 		mov	al, 2
+-		jz	loc_25D7
++		jz	short loc_25D7
+ 		inc	al
+-		jmp	loc_25D7
++		jmp	short loc_25D7
+ ; ---------------------------------------------------------------------------
+ 
+ loc_259F::				; CODE XREF: sub_24D9+A0j
+@@ -767,7 +767,7 @@
+ 		mov	cx, __8087
+ 		and	cx, 0F3Fh
+ 		cmp	cx, 33Fh
+-		jnz	loc_25D7
++		jnz	short loc_25D7
+ 		mov	__8087,	0FFFFh
+ 		fnstsw	__8087
+ 		mov	cx, 14h
+@@ -775,7 +775,7 @@
+ loc_25CB::				; CODE XREF: sub_24D9:loc_25CBj
+ 		loop	loc_25CB
+ 		test	__8087,	0B8BFh
+-		jnz	loc_25D7
++		jnz	short loc_25D7
+ 		inc	al
+ 
+ loc_25D7::				; CODE XREF: sub_24D9+AAj sub_24D9+C0j ...
+@@ -1293,7 +1293,7 @@
+ 
+ loc_28BB::				; CODE XREF: sub_4120+4Ap
+ 					; DATA XREF: __xcvt+2Br
+-		loope	near ptr loc_28C1+2
++		loope	loc_28C1+2
+ 		out	6, ax		; DMA controller, 8237A-5.
+ 					; channel 3 base address
+ 					; (also	sets current address)
+@@ -1332,22 +1332,22 @@
+ 		mov	ax, [bp+var_6]
+ 		and	ah, 47h
+ 		cmp	ah, 40h	; '@'
+-		jz	loc_2914
++		jz	short loc_2914
+ 		cmp	ah, 5
+-		jz	loc_290F
++		jz	short loc_290F
+ 		cmp	ah, 1
+-		jz	loc_290A
+-		jmp	loc_293A
++		jz	short loc_290A
++		jmp	short loc_293A
+ ; ---------------------------------------------------------------------------
+ 
+ loc_290A::				; CODE XREF: __xcvt+7Bj
+ 		mov	dx, 7FFEh
+-		jmp	loc_2934
++		jmp	short loc_2934
+ ; ---------------------------------------------------------------------------
+ 
+ loc_290F::				; CODE XREF: __xcvt+76j
+ 		mov	dx, 7FFFh
+-		jmp	loc_2934
++		jmp	short loc_2934
+ ; ---------------------------------------------------------------------------
+ 
+ loc_2914::				; CODE XREF: __xcvt+71j __xcvt+E2j ...
+@@ -1355,13 +1355,13 @@
+ 		mov	al, 30h	; '0'
+ 		mov	cx, [bp+arg_A]
+ 		or	cx, cx
+-		jg	loc_2923
++		jg	short loc_2923
+ 		neg	cx
+ 		inc	cx
+ 
+ loc_2923::				; CODE XREF: __xcvt+93j
+ 		cmp	cx, 28h	; '('
+-		jbe	loc_292B
++		jbe	short loc_292B
+ 		mov	cx, 28h	; '('
+ 
+ loc_292B::				; CODE XREF: __xcvt+9Bj
+@@ -3407,7 +3407,7 @@
+ ; Attributes: library function
+ 
+ sub_32FB	proc near		; CODE XREF: sub_32F4+2p
+-		aam	10h
++		aam	;10h
+ 		xchg	ah, al
+ 		call	sub_3304
+ 		xchg	ah, al
+@@ -4063,7 +4063,7 @@
+ 		cmp	ah, 78h	; 'x'
+ 		jz	loc_36A4
+ 		cmp	ah, 58h	; 'X'
+-		jnz	loc_36B5
++		jnz	loc_36B5
+ 
+ loc_36A4::				; CODE XREF: __vprinter+391j
+ 		or	[bp+var_2], 40h
+@@ -4328,9 +4328,9 @@
+ 
+ loc_381F::				; CODE XREF: __vram+1Fj
+ 		cmp	[bp+var_2], 0
+-		jnz	loc_3829
++		jnz	short loc_3829
+ 		rep movsw
+-		jmp	loc_3864
++		jmp	short loc_3864
+ ; ---------------------------------------------------------------------------
+ 
+ loc_3829::				; CODE XREF: __vram+2Fj
+@@ -4338,7 +4338,7 @@
+ 		mov	ax, es
+ 		mov	bx, ds
+ 		cmp	ax, bx
+-		jz	loc_3845
++		jz	short loc_3845
+ 
+ loc_3834::				; CODE XREF: __vram+4Dj
+ 		cli
+@@ -4350,7 +4350,7 @@
+ 					; 2: 1=light pen switch	is open; 0=closed
+ 					; 3: 1=vertical	sync pulse is occurring.
+ 		ror	al, 1
+-		jb	loc_3835
++		jb	short loc_3835
+ 
+ loc_383A::				; CODE XREF: __vram+49j
+ 		in	al, dx		; Video	status bits:
+@@ -4359,11 +4359,11 @@
+ 					; 2: 1=light pen switch	is open; 0=closed
+ 					; 3: 1=vertical	sync pulse is occurring.
+ 		ror	al, 1
+-		jnb	loc_383A
++		jnb	short loc_383A
+ 		movsw
+ 		sti
+ 		loop	loc_3834
+-		jmp	loc_3864
++		jmp	short loc_3864
+ ; ---------------------------------------------------------------------------
+ 
+ loc_3845::				; CODE XREF: __vram+3Ej __vram+6Ej
+@@ -4376,7 +4376,7 @@
+ 					; 2: 1=light pen switch	is open; 0=closed
+ 					; 3: 1=vertical	sync pulse is occurring.
+ 		ror	al, 1
+-		jb	loc_3846
++		jb	short loc_3846
+ 
+ loc_384B::				; CODE XREF: __vram+5Aj
+ 		in	al, dx		; Video	status bits:
+@@ -4385,7 +4385,7 @@
+ 					; 2: 1=light pen switch	is open; 0=closed
+ 					; 3: 1=vertical	sync pulse is occurring.
+ 		ror	al, 1
+-		jnb	loc_384B
++		jnb	short loc_384B
+ 		lodsw
+ 		sti
+ 		mov	bx, ax
+@@ -4397,7 +4397,7 @@
+ 					; 2: 1=light pen switch	is open; 0=closed
+ 					; 3: 1=vertical	sync pulse is occurring.
+ 		ror	al, 1
+-		jb	loc_3854
++		jb	short loc_3854
+ 
+ loc_3859::				; CODE XREF: __vram+68j
+ 		in	al, dx		; Video	status bits:
+@@ -4406,7 +4406,7 @@
+ 					; 2: 1=light pen switch	is open; 0=closed
+ 					; 3: 1=vertical	sync pulse is occurring.
+ 		ror	al, 1
+-		jnb	loc_3859
++		jnb	short loc_3859
+ 		mov	ax, bx
+ 		stosw
+ 		sti
+@@ -6707,16 +6707,16 @@
+ 		mov	ax, [bp+intno]
+ 		mov	[bp+var_E], al
+ 		cmp	al, 25h	; '%'
+-		jb	loc_44CB
++		jb	short loc_44CB
+ 		assume es:nothing
+ 		cmp	al, 26h	; '&'
+-		ja	loc_44CB
++		ja	short loc_44CB
+ 		mov	[bp+var_D], 36h	; '6'
+ 		mov	[bp+var_C], 68Fh
+ 		mov	[bp+var_A], cx
+ 		mov	[bp+var_8], 0CAh ; 'Ê'
+ 		mov	[bp+var_7], 2
+-		jmp	loc_44D4
++		jmp	short loc_44D4
+ _intr		endp
+ 
+ 		assume es:nothing, ds:seg2b53
+@@ -7189,7 +7189,7 @@
+ 		mov	ax, di
+ 		dec	di
+ 		or	ax, ax
+-		jnz	loc_46E3
++		jnz	loc_46E3
+ 		mov	dx, [bp+var_8]
+ 		mov	bh, 0
+ 		mov	ah, 2
+@@ -7272,27 +7272,27 @@
+ 		mov	ah, 0
+ 		mov	dx, ax
+ 		cmp	bx, cx
+-		ja	loc_47DA
++		ja	short loc_47DA
+ 		cmp	di, cx
+-		ja	loc_47DA
++		ja	short loc_47DA
+ 		cmp	bx, di
+-		jg	loc_47DA
++		jg	short loc_47DA
+ 		cmp	si, dx
+-		ja	loc_47DA
++		ja	short loc_47DA
+ 		cmp	[bp+arg_0], dx
+-		ja	loc_47DA
++		ja	short loc_47DA
+ 		cmp	si, [bp+arg_0]
+-		jg	loc_47DA
++		jg	short loc_47DA
+ 		or	bx, bx
+-		jle	loc_47DA
++		jle	short loc_47DA
+ 		or	di, di
+-		jle	loc_47DA
++		jle	short loc_47DA
+ 		or	si, si
+-		jle	loc_47DA
++		jle	short loc_47DA
+ 		cmp	[bp+arg_0], 0
+-		jle	loc_47DA
++		jle	short loc_47DA
+ 		mov	ax, 1
+-		jmp	loc_47DC
++		jmp	short loc_47DC
+ ; ---------------------------------------------------------------------------
+ 
+ loc_47DA::				; CODE XREF: __validatexy+1Ej
+@@ -9255,7 +9255,7 @@
+ 		cmp	dx, 0FFFFh
+ 		jnz	loc_5284
+ 		cmp	ax, 0FFFFh
+-		jz	loc_52E4
++		jz	loc_52E4
+ 
+ loc_5284::				; CODE XREF: _ftell+75j
+ 		xor	ax, ax
+@@ -11590,7 +11590,7 @@
+ 		push	di
+ 		mov	di, [bp+handle]
+ 		cmp	di, __nfile
+-		jb	loc_5F8A
++		jb	short loc_5F8A
+ 		mov	ax, 6
+ 		push	ax
+ 		call	__ioerror
+@@ -11601,7 +11601,7 @@
+ 		mov	ax, [bp+len]
+ 		inc	ax
+ 		cmp	ax, 2
+-		jnb	loc_5F98
++		jnb	short loc_5F98
+ 		xor	ax, ax
+ 		jmp	loc_60B9
+ ; ---------------------------------------------------------------------------
+@@ -11610,7 +11610,7 @@
+ 		mov	bx, di
+ 		shl	bx, 1
+ 		test	__openfd[bx], 800h
+-		jz	loc_5FB7
++		jz	short loc_5FB7
+ 		mov	ax, 2
+ 		push	ax		; fromwhere
+ 		xor	ax, ax
+@@ -11676,10 +11676,10 @@
+ 		sub	dx, ax
+ 		sbb	bx, 0
+ 		or	bx, bx
+-		jl	loc_6075
+-		jnz	loc_6039
++		jl	short loc_6075
++		jnz	short loc_6039
+ 		cmp	dx, 80h	; '€'
+-		jb	loc_6075
++		jb	short loc_6075
+ 
+ loc_6039::				; CODE XREF: ___write+C3j
+ 		lea	ax, [bp+var_8E]
+@@ -12135,7 +12135,7 @@
+ ; ---------------------------------------------------------------------------
+ 
+ loc_62D2::				; CODE XREF: init_game(void)+82j
+-		push	large [bp+var_10]
++		push	dword ptr [bp+var_10]
+ 		push	ds
+ 		push	offset aBytesFreeLu ; "Bytes free %lu\n"
+ 		call	_printf
+@@ -13172,7 +13172,7 @@
+ 		assume es:nothing
+ 		mov	byte ptr es:[bx+0Dh], 1
+ 		mov	[bp+var_1], 0
+-		jmp	loc_6D0D
++		jmp	short loc_6D0D
+ ; ---------------------------------------------------------------------------
+ 
+ loc_6CF5::				; CODE XREF: setup_secret_level(void)+2Fj
+@@ -13182,8 +13182,8 @@
+ 		mov	bx, ax
+ 		mov	al, [bx+225h]
+ 		cmp	al, _cur_map
+-		jnz	loc_6D0A
+-		jmp	loc_6D13
++		jnz	short loc_6D0A
++		jmp	short loc_6D13
+ ; ---------------------------------------------------------------------------
+ 
+ loc_6D0A::				; CODE XREF: setup_secret_level(void)+24j
+@@ -13191,11 +13191,11 @@
+ 
+ loc_6D0D::				; CODE XREF: setup_secret_level(void)+11j
+ 		cmp	[bp+var_1], 2
+-		jb	loc_6CF5
++		jb	short loc_6CF5
+ 
+ loc_6D13::				; CODE XREF: setup_secret_level(void)+26j
+ 		cmp	[bp+var_1], 2
+-		jnz	loc_6D29
++		jnz	short loc_6D29
+ 		push	0
+ 		push	0
+ 		push	ds
+@@ -14730,7 +14730,7 @@
+ 		push	word ptr _display
+ 		call	@vga_display@set_palette$qv ; vga_display::set_palette(void)
+ 		add	sp, 4
+-		push	large [_score]
++		push	dword ptr [_score]
+ 		call	@is_record$qul	; is_record(ulong)
+ 		add	sp, 4
+ 		mov	[bp+var_5], al
+@@ -14767,7 +14767,7 @@
+ 		push	0		; char
+ 		push	word ptr [bp+src+2]
+ 		push	word ptr [bp+src] ; src
+-		push	large [_score]	; __int32
++		push	dword ptr [_score]	; __int32
+ 		call	@save_new_score$qulnucuc ; save_new_score(ulong,uchar *,uchar)
+ 		add	sp, 0Ah
+ 
+@@ -18073,9 +18073,9 @@
+ 		call	@m_actor@set_xy$qii ; m_actor::set_xy(int,int)
+ 		add	sp, 8
+ 		cmp	[bp+arg_4], 0Ah
+-		jnz	loc_972E
++		jnz	short loc_972E
+ 		push	0Ah
+-		jmp	loc_9730
++		jmp	short loc_9730
+ ; ---------------------------------------------------------------------------
+ 
+ loc_972E::				; CODE XREF: add_missile(m_actor *,uchar,int)+1EFj
+@@ -18664,23 +18664,23 @@
+ 		assume es:nothing
+ 		add	sp, 8
+ 		cmp	_heavy_timer, 0
+-		jz	loc_9C0C
++		jz	short loc_9C0C
+ 		dec	_heavy_timer
+ 
+ loc_9C0C::				; CODE XREF: ego_fire(void)+69j
+ 		cmp	_jason_fire, 0
+-		jz	loc_9C49
++		jz	short loc_9C49
+ 		cmp	_jason_present,	0
+-		jz	loc_9C49
++		jz	short loc_9C49
+ 		les	bx, _jason
+ 		assume es:nothing
+ 		cmp	byte ptr es:[bx+3Dh], 0
+-		jnz	loc_9C49
++		jnz	short loc_9C49
+ 		push	0
+ 		cmp	_shot_size, 0
+-		jnz	loc_9C33
++		jnz	short loc_9C33
+ 		mov	ax, 1
+-		jmp	loc_9C35
++		jmp	short loc_9C35
+ ; ---------------------------------------------------------------------------
+ 
+ loc_9C33::				; CODE XREF: ego_fire(void)+8Fj
+@@ -18942,18 +18942,18 @@
+ 		les	bx, dword ptr _the_game
+ 		assume es:nothing
+ 		cmp	byte ptr es:[bx+2Ah], 0
+-		jz	loc_9E4B
++		jz	short loc_9E4B
+ 		les	bx, _cur_sub
+ 		assume es:nothing
+ 		cmp	byte ptr es:[bx+34h], 0
+-		jz	loc_9E2D
++		jz	short loc_9E2D
+ 		push	cs
+ 		call	near ptr @turn_ego$qv ;	turn_ego(void)
+ 
+ loc_9E2D::				; CODE XREF: check_user(void)+111j
+ 		les	bx, _cur_sub
+ 		cmp	byte ptr es:[bx+3Dh], 1
+-		jz	loc_9E45
++		jz	short loc_9E45
+ 		mov	al, _ego_x_speed
+ 		mov	ah, 0
+ 		les	bx, _cur_sub
+@@ -18961,25 +18961,25 @@
+ 
+ loc_9E45::				; CODE XREF: check_user(void)+120j
+ 		mov	[bp+var_1], 1
+-		jmp	loc_9EAD
++		jmp	short loc_9EAD
+ ; ---------------------------------------------------------------------------
+ 		assume es:nothing
+ 
+ loc_9E4B::				; CODE XREF: check_user(void)+106j
+ 		les	bx, dword ptr _the_game
+ 		cmp	byte ptr es:[bx+29h], 0
+-		jz	loc_9E85
++		jz	short loc_9E85
+ 		les	bx, _cur_sub
+ 		assume es:nothing
+ 		cmp	byte ptr es:[bx+34h], 1
+-		jz	loc_9E65
++		jz	short loc_9E65
+ 		push	cs
+ 		call	near ptr @turn_ego$qv ;	turn_ego(void)
+ 
+ loc_9E65::				; CODE XREF: check_user(void)+149j
+ 		les	bx, _cur_sub
+ 		cmp	byte ptr es:[bx+3Dh], 1
+-		jz	loc_9E7F
++		jz	short loc_9E7F
+ 		mov	al, _ego_x_speed
+ 		mov	ah, 0
+ 		neg	ax
+@@ -18988,7 +18988,7 @@
+ 
+ loc_9E7F::				; CODE XREF: check_user(void)+158j
+ 		mov	[bp+var_1], 1
+-		jmp	loc_9EAD
++		jmp	short loc_9EAD
+ ; ---------------------------------------------------------------------------
+ 		assume es:nothing
+ 
+@@ -18996,14 +18996,14 @@
+ 		les	bx, _cur_sub
+ 		assume es:nothing
+ 		cmp	word ptr es:[bx+14h], 0
+-		jz	loc_9EAD
++		jz	short loc_9EAD
+ 		assume es:nothing
+ 		les	bx, _cur_sub
+ 		cmp	word ptr es:[bx+14h], 0
+-		jle	loc_9EA5
++		jle	short loc_9EA5
+ 		les	bx, _cur_sub
+ 		dec	word ptr es:[bx+14h]
+-		jmp	loc_9EAD
++		jmp	short loc_9EAD
+ ; ---------------------------------------------------------------------------
+ 
+ loc_9EA5::				; CODE XREF: check_user(void)+183j
+@@ -19016,16 +19016,16 @@
+ 		les	bx, dword ptr _the_game
+ 		assume es:nothing
+ 		cmp	byte ptr es:[bx+28h], 0
+-		jz	loc_9EF3
++		jz	short loc_9EF3
+ 		mov	al, _ego_y_speed
+ 		mov	ah, 0
+ 		les	bx, _cur_sub
+ 		assume es:nothing
+ 		cmp	ax, es:[bx+16h]
+-		jle	loc_9ED1
++		jle	short loc_9ED1
+ 		les	bx, _cur_sub
+ 		inc	word ptr es:[bx+16h]
+-		jmp	loc_9EED
++		jmp	short loc_9EED
+ ; ---------------------------------------------------------------------------
+ 
+ loc_9ED1::				; CODE XREF: check_user(void)+1AFj
+@@ -19033,7 +19033,7 @@
+ 		mov	ah, 0
+ 		les	bx, _cur_sub
+ 		cmp	ax, es:[bx+16h]
+-		jge	loc_9EED
++		jge	short loc_9EED
+ 		mov	al, _ego_y_speed
+ 		mov	ah, 0
+ 		les	bx, _cur_sub
+@@ -20160,7 +20160,7 @@
+ 		push	0Ah		; radix
+ 		push	ds
+ 		push	offset _tmp2	; string
+-		push	large [_score]	; value
++		push	dword ptr [_score]	; value
+ 		call	_ltoa
+ 		add	sp, 0Ah
+ 		push	dx
+@@ -20261,13 +20261,13 @@
+ 		dec	ax
+ 		mov	[bp+var_2], ax
+ 		cmp	_jason_present,	0
+-		jnz	loc_A9BF
++		jnz	short loc_A9BF
+ 		jmp	loc_AACC
+ ; ---------------------------------------------------------------------------
+ 
+ loc_A9BF::				; CODE XREF: update_jason_guage(void)+3Ej
+ 		cmp	[bp+var_2], 1
+-		jg	loc_A9C8
++		jg	short loc_A9C8
+ 		jmp	loc_AACC
+ ; ---------------------------------------------------------------------------
+ 
+@@ -22237,7 +22237,7 @@
+ 		push	0Ah		; radix
+ 		push	ds
+ 		push	offset _tmp2	; string
+-		push	large [_score]	; value
++		push	dword ptr [_score]	; value
+ 		call	_ltoa
+ 		add	sp, 0Ah
+ 		push	dx
+@@ -23606,7 +23606,7 @@
+ @wait_for_user$qv proc far		; CODE XREF: show_stats(void)+673p
+ 		push	bp
+ 		mov	bp, sp
+-		jmp	loc_CB5B
++		jmp	short loc_CB5B
+ ; ---------------------------------------------------------------------------
+ 
+ loc_CB4B::				; CODE XREF: wait_for_user(void)+1Ej
+@@ -23620,15 +23620,15 @@
+ 		les	bx, dword ptr _the_game
+ 		assume es:nothing
+ 		cmp	byte ptr es:[bx+2Bh], 0
+-		jnz	loc_CB4B
++		jnz	short loc_CB4B
+ 		les	bx, _mouse
+ 		cmp	byte ptr es:[bx], 0
+-		jnz	loc_CB4B
++		jnz	short loc_CB4B
+ 		cmp	byte_2D3E4, 0
+-		jnz	loc_CB4B
++		jnz	short loc_CB4B
+ 		cmp	byte_2D3C7, 0
+-		jnz	loc_CB4B
+-		jmp	loc_CB90
++		jnz	short loc_CB4B
++		jmp	short loc_CB90
+ ; ---------------------------------------------------------------------------
+ 
+ loc_CB80::				; CODE XREF: wait_for_user(void)+75j
+@@ -23642,24 +23642,24 @@
+ 		mov	al, es:[bx+2Bh]
+ 		mov	ah, 0
+ 		or	ax, ax
+-		jnz	loc_CBBD
++		jnz	short loc_CBBD
+ 		les	bx, _mouse
+ 		mov	al, es:[bx]
+ 		mov	ah, 0
+ 		or	ax, ax
+-		jnz	loc_CBBD
++		jnz	short loc_CBBD
+ 		mov	al, byte_2D3E4
+ 		mov	ah, 0
+ 		or	ax, ax
+-		jnz	loc_CBBD
++		jnz	short loc_CBBD
+ 		mov	al, byte_2D3C7
+ 		mov	ah, 0
+ 		or	ax, ax
+-		jz	loc_CB80
++		jz	short loc_CB80
+ 
+ loc_CBBD::				; CODE XREF: wait_for_user(void)+56j
+ 					; wait_for_user(void)+63j ...
+-		jmp	loc_CBCF
++		jmp	short loc_CBCF
+ ; ---------------------------------------------------------------------------
+ 
+ loc_CBBF::				; CODE XREF: wait_for_user(void)+92j
+@@ -23672,14 +23672,14 @@
+ loc_CBCF::				; CODE XREF: wait_for_user(void):loc_CBBDj
+ 		les	bx, dword ptr _the_game
+ 		cmp	byte ptr es:[bx+2Bh], 0
+-		jnz	loc_CBBF
++		jnz	short loc_CBBF
+ 		les	bx, _mouse
+ 		cmp	byte ptr es:[bx], 0
+-		jnz	loc_CBBF
++		jnz	short loc_CBBF
+ 		cmp	byte_2D3E4, 0
+-		jnz	loc_CBBF
++		jnz	short loc_CBBF
+ 		cmp	byte_2D3C7, 0
+-		jnz	loc_CBBF
++		jnz	short loc_CBBF
+ 		pop	bp
+ 		retf
+ @wait_for_user$qv endp
+@@ -26536,7 +26536,7 @@
+ 		pop	es
+ 		assume es:nothing
+ 		cmp	word ptr es:[bx], 100h
+-		jb	loc_E45B
++		jb	short loc_E45B
+ 		les	bx, _the_map
+ 		assume es:nothing
+ 		les	bx, es:[bx+39Eh]
+@@ -30812,7 +30812,7 @@
+ 		push	word ptr es:[bx+8]
+ 		call	@score_at$qiii	; score_at(int,int,int)
+ 		add	sp, 6
+-		jmp	loc_1099B
++		jmp	short loc_1099B
+ ; ---------------------------------------------------------------------------
+ 		assume es:nothing
+ 
+@@ -31151,7 +31151,7 @@
+ 		neg	ax
+ 		pop	es
+ 		cmp	es:[bx+16h], ax
+-		jz	loc_10BC0
++		jz	short loc_10BC0
+ 		les	bx, [bp+6]
+ 		dec	word ptr es:[bx+16h]
+ 		assume es:nothing
+@@ -31164,19 +31164,19 @@
+ 
+ loc_10BC3::				; CODE XREF: seg0b2c:35F1j
+ 		cmp	_smart_missiles, 1
+-		jnz	loc_10C15
++		jnz	short loc_10C15
+ 		les	bx, [bp+6]
+ 		assume es:nothing
+ 		cmp	byte ptr es:[bx+34h], 63h ; 'c'
+-		jz	loc_10C15
++		jz	short loc_10C15
+ 		les	bx, [bp+6]
+ 		mov	ax, es:[bx+0Ah]
+ 		les	bx, _cur_sub
+ 		cmp	ax, es:[bx+0Ah]
+-		jle	loc_10BF0
++		jle	short loc_10BF0
+ 		les	bx, [bp+6]
+ 		mov	word ptr es:[bx+16h], 0FFFFh
+-		jmp	loc_10C15
++		jmp	short loc_10C15
+ ; ---------------------------------------------------------------------------
+ 
+ loc_10BF0::				; CODE XREF: seg0b2c:3743j
+@@ -31184,10 +31184,10 @@
+ 		mov	ax, es:[bx+0Ah]
+ 		les	bx, _cur_sub
+ 		cmp	ax, es:[bx+0Ah]
+-		jge	loc_10C0C
++		jge	short loc_10C0C
+ 		les	bx, [bp+6]
+ 		mov	word ptr es:[bx+16h], 1
+-		jmp	loc_10C15
++		jmp	short loc_10C15
+ ; ---------------------------------------------------------------------------
+ 
+ loc_10C0C::				; CODE XREF: seg0b2c:375Fj
+@@ -31198,7 +31198,7 @@
+ loc_10C15::				; CODE XREF: seg0b2c:3728j
+ 					; seg0b2c:3732j ...
+ 		mov	byte ptr [bp-1], 0
+-		jmp	loc_10C53
++		jmp	short loc_10C53
+ ; ---------------------------------------------------------------------------
+ 
+ loc_10C1B::				; CODE XREF: seg0b2c:37BAj
+@@ -31244,7 +31244,7 @@
+ 		les	bx, [bp+6]
+ 		assume es:nothing
+ 		cmp	word ptr es:[bx+14h], 0
+-		jle	loc_10C84
++		jle	loc_10C84
+ 		push	5
+ 		jmp	loc_10C86
+ ; ---------------------------------------------------------------------------
+@@ -31720,35 +31720,35 @@
+ 		call	@m_actor@facing_actor$qn7m_actor ; m_actor::facing_actor(m_actor *)
+ 		add	sp, 8
+ 		or	al, al
+-		jz	loc_110CF
++		jz	short loc_110CF
+ 		push	0Ah
+ 		call	@random$qi	; random(int)
+ 		pop	cx
+ 		or	ax, ax
+-		jnz	loc_110CF
+-		jmp	loc_11148
++		jnz	short loc_110CF
++		jmp	short loc_11148
+ ; ---------------------------------------------------------------------------
+ 
+ loc_110CF::				; CODE XREF: seg0b2c:3C1Fj
+ 					; seg0b2c:3C2Bj
+-		jmp	loc_11107
++		jmp	short loc_11107
+ ; ---------------------------------------------------------------------------
+ 
+ loc_110D1::				; CODE XREF: seg0b2c:3BFEj
+ 					; seg0b2c:3C05j
+ 		cmp	_diff_y, 0Ah
+-		jbe	loc_11107
++		jbe	short loc_11107
+ 		les	bx, [bp+6]
+ 		cmp	word ptr es:[bx+22h], 0
+-		jnz	loc_11107
++		jnz	short loc_11107
+ 		les	bx, [bp+6]
+ 		mov	ax, es:[bx+0Ah]
+ 		les	bx, _cur_sub
+ 		cmp	ax, es:[bx+0Ah]
+-		jge	loc_110FE
++		jge	short loc_110FE
+ 		les	bx, [bp+6]
+ 		mov	word ptr es:[bx+16h], 1
+-		jmp	loc_11107
++		jmp	short loc_11107
+ ; ---------------------------------------------------------------------------
+ 
+ loc_110FE::				; CODE XREF: seg0b2c:3C51j
+@@ -31759,7 +31759,7 @@
+ 					; seg0b2c:3C36j ...
+ 		les	bx, [bp+6]
+ 		cmp	byte ptr es:[bx+38h], 0
+-		jnz	loc_11123
++		jnz	short loc_11123
+ 		push	9
+ 		push	8
+ 		push	word ptr [bp+8]
+@@ -33110,7 +33110,7 @@
+ 		call	@i_yes_cancel$qnucuc ; i_yes_cancel(uchar *,uchar)
+ 		add	sp, 6
+ 		or	al, al
+-		jz	loc_11D7C
++		jz	loc_11D7C
+ 		jmp	loc_11E60
+ ; ---------------------------------------------------------------------------
+ 
+@@ -35101,7 +35101,7 @@
+ 		push	offset aAdlibCardNot_0 ; "Adlib	card not present."
+ 		call	@i_inform$qnucuct1 ; i_inform(uchar *,uchar,uchar *)
+ 		add	sp, 0Ah
+-		jmp	loc_13007
++		jmp	short loc_13007
+ ; ---------------------------------------------------------------------------
+ 
+ loc_12FF7::				; CODE XREF: seg0fa9:1371j
+@@ -41810,10 +41810,10 @@
+ 		call	near ptr @ms_mouse@set_cursor$qnucii ; ms_mouse::set_cursor(uchar *,int,int)
+ 		assume es:nothing
+ 		add	sp, 0Ch
+-		mov	[bp+preg.r_ax],	0Ch
+-		mov	[bp+preg.r_cx],	1Fh
+-		mov	[bp+preg.r_dx],	0C1Dh
+-		mov	[bp+preg.r_es],	seg seg137f
++		mov	(REGPACK ptr [bp+preg]).r_ax,	0Ch
++		mov	(REGPACK ptr [bp+preg]).r_cx,	1Fh
++		mov	(REGPACK ptr [bp+preg]).r_dx,	0C1Dh
++		mov	(REGPACK ptr [bp+preg]).r_es,	seg seg137f
+ 		push	ss
+ 		lea	ax, [bp+preg]
+ 		push	ax		; preg
+@@ -43724,7 +43724,7 @@
+ 		call	near ptr @pull_down@decrease_cur_selection$qv ;	pull_down::decrease_cur_selection(void)
+ 		add	sp, 4
+ 
+-loc_17073::				; CODE XREF: seg137f:1694j
++loc_17073::				; CODE XREF: seg137f:1694j
+ 		cmp	word ptr [bp-4], 1
+ 		jnz	loc_17086
+ 		push	word ptr [bp+8]
+@@ -44246,8 +44246,8 @@
+ @menu_bar@poll$qv:			; DATA XREF: seg2608:2411o
+ 		enter	0Ah, 0
+ 		cmp	_i_external_button, 0
+-		jz	loc_174A3
+-		jmp	$+2
++		jz	short loc_174A3
++		jmp	short $+2
+ ; ---------------------------------------------------------------------------
+ 
+ loc_1749B::				; CODE XREF: seg137f:1AC9j
+@@ -44255,13 +44255,13 @@
+ 		call	_i_external_button
+ 		assume es:nothing
+ 		or	al, al
+-		jnz	loc_1749B
++		jnz	short loc_1749B
+ 
+ loc_174A3::				; CODE XREF: seg137f:1AC7j
+ 		les	bx, _mouse
+ 		assume es:nothing
+ 		cmp	byte ptr es:[bx+2Eh], 0
+-		jnz	loc_174CA
++		jnz	short loc_174CA
+ 		les	bx, [bp+6]
+ 		assume es:nothing
+ 		push	word ptr es:[bx+1Ah]
+@@ -45315,7 +45315,7 @@
+ 		call	dword ptr [bx+4]
+ 		add	sp, 4
+ 		mov	[bp+var_2], 0
+-		jmp	loc_17D95
++		jmp	short loc_17D95
+ ; ---------------------------------------------------------------------------
+ 
+ loc_17D75::				; CODE XREF: text_box::~text_box(void)+5Bj
+@@ -45355,7 +45355,7 @@
+ 		call	@gui_item@$bdtr$qv ; gui_item::~gui_item(void)
+ 		add	sp, 6
+ 		test	[bp+arg_4], 1
+-		jz	locret_17DE8
++		jz	short locret_17DE8
+ 		push	word ptr [bp+block+2]
+ 		push	word ptr [bp+block] ; block
+ 		call	@$bdele$qnv	; operator delete(void *)
+@@ -46898,7 +46898,7 @@
+ 
+ loc_18C77::				; CODE XREF: file_box::file_box(uchar *)+137j
+ 		push	ss
+-		lea	ax, [bp+ffblk____.ff_name]
++		lea	ax, (ffblk ptr [bp+ffblk____]).ff_name
+ 		push	ax		; s
+ 		call	_strdup
+ 		add	sp, 4
+@@ -51312,8 +51312,8 @@
+ 		add	sp, 4
+ 		call	_x_set320x200
+ 		assume es:nothing
+-		mov	[bp+preg.r_ax],	1130h
+-		mov	[bp+preg.r_bx],	300h
++		mov	(REGPACK ptr [bp+preg]).r_ax,	1130h
++		mov	(REGPACK ptr [bp+preg]).r_bx,	300h
+ 		push	ss
+ 		lea	ax, [bp+preg]
+ 		push	ax		; preg
+@@ -51321,9 +51321,9 @@
+ 		call	_intr
+ 		assume es:nothing
+ 		add	sp, 6
+-		mov	ax, [bp+preg.r_es]
++		mov	ax, (REGPACK ptr [bp+preg]).r_es
+ 		mov	word ptr _system_font_ptr+2, ax
+-		mov	ax, [bp+preg.r_bp]
++		mov	ax, (REGPACK ptr [bp+preg]).r_bp
+ 		mov	word ptr _system_font_ptr, ax
+ 
+ loc_1B06E::				; CODE XREF: vga_display::vga_display(uchar)+1Cj
+@@ -52025,7 +52025,7 @@
+ 		mov	word ptr [bp-16h], 0
+ 		mov	word ptr [bp-14h], 100h
+ 		mov	word ptr [bp-12h], offset _palette
+-		mov	[bp+segregs._es], ds
++		mov	(SREGS ptr [bp+segregs])._es, ds
+ 		push	1
+ 		push	[bp+arg_2]
+ 		push	[bp+arg_0]
+@@ -53827,7 +53827,7 @@
+ arg_8		= byte ptr  0Eh
+ 
+ 		enter	4, 0
+-		push	large [bp+arg_0]
++		push	dword ptr [bp+arg_0]
+ 		nop
+ 		push	cs
+ 		call	near ptr @is_record$qul	; is_record(ulong)
+@@ -53974,7 +53974,7 @@
+ 		mov	ah, 0
+ 		shl	ax, 4
+ 		mov	bx, ax
+-		push	large dword_2D300[bx] ;	value
++		push	dword ptr dword_2D300[bx] ;	value
+ 		call	_ultoa
+ 		add	sp, 0Ah
+ 
+@@ -55767,13 +55767,13 @@
+ 		mov	byte ptr [bp+var_6], al
+ 		mov	cx, [bp+arg_4]
+ 		sub	cx, [bp+arg_0]
+-		jle	copydone
++		jle	short copydone
+ 		nop
+ 		nop
+ 		mov	[bp+var_2], cx
+ 		mov	bx, [bp+arg_6]
+ 		sub	bx, [bp+arg_2]
+-		jle	copydone
++		jle	short copydone
+ 		nop
+ 		nop
+ 		mov	dx, 3C4h
+@@ -70789,14 +70789,14 @@
+ 		mov	dx, 0Fh
+ 		mov	ax, 4240h
+ 		cmp	bx, 0
+-		jz	locret_24156
++		jz	short locret_24156
+ 		div	bx
+ 		pop	bx
+ 		mov	cs:word_23514[bx], ax
+ 		mov	ax, es:[di+20h]
+ 		mov	cs:word_23484[bx], 0
+ 		cmp	ax, 1
+-		jnz	loc_2414F
++		jnz	short loc_2414F
+ 		mov	cs:word_23484[bx], 1
+ 		mov	ax, es:[di+22h]
+ 		mov	cs:word_23464[bx], ax
+@@ -74359,7 +74359,7 @@
+ 		jb	loc_255BB
+ 		cmp	bx, 4001h
+ 		jl	loc_255A6
+-		mov	al, [bp+var_6]
++		mov	al, byte ptr [bp+var_6]
+ 		or	al, al
+ 		jnz	loc_255B4
+ 		jmp	loc_255A6
+@@ -74871,7 +74871,7 @@
+ 		adc	cx, dx
+ 		adc	si, 0
+ 
+-loc_25913::				; CODE XREF: sub_25863+97j
++loc_25913::				; CODE XREF: sub_25863+97j
+ 		mov	ax, [bp+12h]
+ 		or	ax, ax
+ 		jz	loc_2593E
+@@ -76075,7 +76075,7 @@
+ 
+ loc_260D6::				; CODE XREF: sub_26099+17j
+ 		mov	bx, 4001h
+-		jmp	loc_260B5
++		jmp	loc_260B5
+ ; ---------------------------------------------------------------------------
+ 
+ loc_260DB::				; CODE XREF: sub_26099+12j
+@@ -76177,7 +76177,7 @@
+ loc_2616B::				; CODE XREF: sub_260F6+31j
+ 		sub	dx, dx
+ 		cmp	word ptr [si+8], 0C001h
+-		jle	loc_26187
++		jle	loc_26187
+ 		mov	ch, 10h
+ 		jmp	loc_26184
+ ; ---------------------------------------------------------------------------
+@@ -78832,7 +78832,7 @@
+ 		cmp	ax, 0C001h
+ 		jle	loc_27299
+ 		cmp	ax, 4001h
+-		jge	loc_2729D
++		jge	loc_2729D
+ 		call	sub_26FB6
+ 
+ loc_27294::				; CODE XREF: seg2333:1D9Fj
+@@ -80553,17 +80553,17 @@
+ seg25ab		segment	byte public 'CODE' use16
+ 		assume cs:seg25ab
+ 		assume es:nothing, ss:nothing, ds:seg2608, fs:nothing, gs:nothing
+-tbyte_27C90	dt 0.78539816339744830963 ; DATA XREF: seg25ab:0084r
+-					; seg25ab:0157r
+-tbyte_27C9A	dt 1.5707963267948966193 ; DATA	XREF: seg25ab:014Cr
+-					; seg25ab:017Dr
+-flt_27CA4	dd -5.1110893e38	; DATA XREF: seg25ab:0067r
+-					; seg25ab:0075r
+-flt_27CA8	dd -5.1117124e38	; DATA XREF: seg25ab:01D7r
+-		db 0, 4Ah, 0C0h, 0FFh
+-flt_27CB0	dd 0.5			; DATA XREF: seg25ab:026Cr
+-tbyte_27CB4	dt 1.4142135623730950489 ; DATA	XREF: seg25ab:02CCr
+-flt_27CBE	dd 3.4028237e38		; DATA XREF: seg25ab:011Dr
++tbyte_27C90	REAL10 0.78539816339744830963 ; DATA XREF: seg25ab:0084r
++ 					; seg25ab:0157r
++tbyte_27C9A	REAL10 1.5707963267948966193 ; DATA	XREF: seg25ab:014Cr
++ 					; seg25ab:017Dr
++flt_27CA4	REAL8 -5.1110893e38	; DATA XREF: seg25ab:0067r
++ 					; seg25ab:0075r
++flt_27CA8	REAL8 -5.1117124e38	; DATA XREF: seg25ab:01D7r
++ 		db 0, 4Ah, 0C0h, 0FFh
++ flt_27CB0	dd 0.5			; DATA XREF: seg25ab:026Cr
++tbyte_27CB4	REAL10 1.4142135623730950489 ; DATA	XREF: seg25ab:02CCr
++flt_27CBE	REAL8 3.4028237e38		; DATA XREF: seg25ab:011Dr
+ 					; seg25ab:0255r
+ ; ---------------------------------------------------------------------------
+ 		mov	cl, 0
+@@ -82867,8 +82867,7 @@
+ 					; gui_item::gui_item(void)+1Fo
+ 					; gui_item::draw(void)
+ 		dd @gui_item@erase$qv	; gui_item::erase(void)
+-		dw 7334h		; x0r TODO
+-		dw seg seg03f9
++		dd 6177334h
+ ; `__vtable__'[button]
+ @button@	dd @button@draw$qv	; DATA XREF: button::~button(void)+Do
+ 					; button::button(uchar *,void *,uchar)+2Co
+@@ -84938,7 +84937,7 @@
+ tbyte_2AFCE	dt 9.9999999999999999997e1023 ;	DATA XREF: __pow10+99r
+ tbyte_2AFD8	dt 1.0e2048		; DATA XREF: __pow10+A5r
+ tbyte_2AFE2	dt 1.0e4096		; DATA XREF: __pow10+B1r
+-flt_2AFEC	dd 3.4028237e38		; DATA XREF: __pow10+17r
++flt_2AFEC	REAL8 3.4028237e38		; DATA XREF: __pow10+17r
+ __atexitcnt	dw 0			; DATA XREF: _atexit+3r
+ 					; _atexit:loc_2C57r ...
+ 		public __ctype
